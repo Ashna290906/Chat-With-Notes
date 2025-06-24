@@ -1,5 +1,5 @@
-from langchain.vectorstores import FAISS
-from langchain.embeddings.base import Embeddings
+from langchain_community.vectorstores import FAISS
+from langchain_core.embeddings import Embeddings
 import cohere
 import os
 from dotenv import load_dotenv

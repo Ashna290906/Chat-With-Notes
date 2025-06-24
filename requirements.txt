@@ -1,6 +1,7 @@
 streamlit
 streamlit-authenticator
-langchain
+langchain-core
+langchain-community
 cohere
 PyMuPDF
 faiss-cpu
