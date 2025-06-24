@@ -1,21 +1,31 @@
-# Environment variables
-.env
-
-# Firebase
-firebase-service-account.json
-
-# Python
+# Python bytecode
 __pycache__/
 *.py[cod]
 *$py.class
 
-# Virtual Environment
+# Environment files
+.env
+.env.*
+
+# Firebase service account
+firebase-service-account.json
+
+# Virtual environments
 venv/
 env/
+.venv/
 
-# IDE
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# VSCode settings
 .vscode/
+
+# PyCharm settings
 .idea/
+
+# Logs
+*.log
 
 # OS generated files
 .DS_Store
@@ -25,3 +35,24 @@ env/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Python egg files
+*.egg
+*.egg-info/
+
+# PyInstaller
+dist/
+build/
+*.spec
+
+# Testing
+.pytest_cache/
+.tox/
+coverage.xml
+htmlcov/
+
+# Node modules (in case you use npm/yarn for frontend)
+node_m_
