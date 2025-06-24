@@ -396,7 +396,7 @@ with st.sidebar:
     st.markdown("### Upload Document")
     uploaded_file = st.file_uploader(
         "Drag and drop a file here or click to browse",
-        type=["pdf", "txt", "docx", "pptx", "ppt"],
+        type=["pdf", "txt", "docx", "pptx", "ppt", "xlsx", "xls"],
         label_visibility="collapsed"
     )
     
@@ -412,6 +412,8 @@ with st.sidebar:
                     'doc': 'docx',
                     'pptx': 'pptx',
                     'ppt': 'pptx',  # Handle both .ppt and .pptx
+                    'xlsx': 'xlsx',   # Excel files
+                    'xls': 'xls',     # Older Excel format
                     'txt': 'txt'
                 }
                 filetype = filetype_mapping.get(file_extension)
