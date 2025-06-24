@@ -1,0 +1,16 @@
+credentials:
+  usernames:
+    ashna.singh2909@gmail.com:
+      email: ashna.singh2909@gmail.com
+      name: Ashna
+      password: ""
+
+cookie:
+  expiry_days: 1
+  key: your_cookie_secret_key  # can be any random string
+  name: chatwithnotes_auth
+
+preauthorized:
+  emails:
+    - ashna.singh2909@gmail.com
+

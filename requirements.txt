@@ -1,0 +1,12 @@
+streamlit
+streamlit-authenticator
+langchain
+cohere
+PyMuPDF
+faiss-cpu
+python-docx
+python-pptx
+python-dotenv
+requests
+
+
