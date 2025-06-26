@@ -1,0 +1,9 @@
+Starting debug output...
+Python version: 3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]
+Current directory: C:\Users\Ashna\Downloads\chat_with_notes_firebase
+Checking for .env file at: C:\Users\Ashna\Downloads\chat_with_notes_firebase\.env
+.env exists: True
+Loading environment variables...
+API Key loaded: Yes
+API Key starts with: wu9wsu6n...
+API Key length: 40 characters

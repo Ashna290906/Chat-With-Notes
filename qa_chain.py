@@ -6,11 +6,20 @@ import os
 
 def get_qa_chain(vectorstore, detail_level):
     cohere_key = os.getenv("COHERE_API_KEY")
-    model = "command"
-    temperature = 0.3
-    max_tokens = 1000  # Balanced token limit for quality and speed
-    num_generations = 1  # Single generation for faster response
-    max_retries = 2  # Limit retries to prevent timeouts
+    model = "command"  # Using the more capable model for better responses
+    temperature = 0.7  # Higher temperature for more creative and detailed responses
+    max_tokens = 1000  # Increased token limit for more comprehensive answers
+    num_generations = 1
+    max_retries = 1
+    
+    # Add prompt suffix to encourage detailed responses
+    prompt_suffix = ("\nIMPORTANT: Provide a comprehensive answer with detailed explanations, "
+                   "examples, and proper formatting. Use bullet points (•) for lists and key points "
+                   "wherever appropriate. For complex topics, use a mix of paragraphs and bullet points "
+                   "to enhance readability. Maintain clear structure with markdown formatting.")
+    
+    # Add repetition penalty to reduce redundancy
+    repetition_penalty = 1.2
 
     instruction = ""
     if detail_level == "Detailed":
@@ -81,6 +90,16 @@ def get_qa_chain(vectorstore, detail_level):
            - Online courses and tutorials
            - Tools and software
            - Expert communities and forums
+        10.**important**
+           - Answer should be complete
+           - answer should always be complete never leave incomplete answer
+           - answer should be to the point in 2-4 paragraph unless asked in detail or in depth
+           - answer asked in detsil or depth it should be in detail with 7-8 level of depth
+           - answer should be in simple language
+           - if asked in tabular form or difference form then answer in tabular form 
+           - if asked in bullet points or points then answer in bullet points or point form
+           - if asked in list form then answer in list form
+           - answer should be concise to the point unless asked in detail or in depth
         
         ## FORMATTING REQUIREMENTS:
         - Use Markdown extensively (headings, subheadings, lists, tables, etc.)
@@ -99,63 +118,41 @@ def get_qa_chain(vectorstore, detail_level):
     else:
         instruction = "Provide a concise and clear answer, focusing on the key points."
 
-    prompt = PromptTemplate.from_template(f"""
-# DETAILED EXPERT ANALYSIS
+    # Create the base prompt
+    base_prompt = """
+You are an expert assistant providing detailed, comprehensive answers based on the following context. 
 
-## SOURCE CONTEXT:
-{{context}}
+CONTEXT:
+{context}
 
-## USER'S QUERY:
-{{question}}
+QUESTION: {question}
 
-## RESPONSE PARAMETERS:
-- **Response Length**: 500-800 words
-- **Detail Level**: Focused and relevant depth
-- **Structure**: Follow the outline below
-- **Evidence**: Include key examples and data
-- **Formatting**: Use markdown for clarity
+INSTRUCTIONS:
+1. Provide a thorough, well-structured answer in 3-5 paragraphs
+2. Include relevant examples and explanations
+3. Use markdown formatting (headings, lists, bold/italic) for better readability
+4. If the question is about a concept, include:
+   - Definition
+   - Key characteristics
+   - Real-world applications
+   - Related concepts
+5. For comparison questions, use tables or bullet points
+6. If unsure, say so and explain what information would be needed
 
-## INSTRUCTIONS FOR AI:
-1. **Exhaustive Coverage**: Leave no stone unturned in your analysis
-2. **Multiple Perspectives**: Consider all possible angles and viewpoints
-3. **Depth of Detail**: Go multiple levels deep in your explanations
-4. **Evidence-Based**: Support every claim with concrete evidence
-5. **Structured Flow**: Maintain logical progression between sections
-6. **Visual Thinking**: Include detailed descriptions of visual elements
-7. **Critical Analysis**: Evaluate strengths, weaknesses, and limitations
-8. **Practical Applications**: Provide real-world implementation details
-
-## REQUIRED RESPONSE STRUCTURE:
-{instruction}
-
-## ADDITIONAL REQUIREMENTS:
-- If any information is missing from the context, explicitly state what's needed
-- Use markdown extensively for maximum readability
-- Include hypothetical examples where real ones aren't available
-- Cross-reference different parts of the analysis
-- Use analogies to explain complex concepts
-- Address potential counter-arguments
-- Provide historical context where relevant
-- Include relevant formulas, calculations, or technical details
-
-## FINAL OUTPUT INSTRUCTIONS:
-1. Begin with a comprehensive executive summary
-2. Follow the detailed structure below exactly
-3. Maintain academic rigor while remaining accessible
-4. Use clear section headers and subheaders
-5. Include numerous examples and case studies
-6. Conclude with actionable insights and next steps
-7. Provide extensive references and resources
-
-## BEGIN YOUR ULTRA-DETAILED RESPONSE:
-""")
-
+DETAILED ANSWER:"""
+    
+    # Combine with the prompt suffix
+    full_prompt = base_prompt + prompt_suffix
+    
+    # Create the prompt template
+    prompt = PromptTemplate.from_template(full_prompt)
+ 
     # Configure the language model
     llm = Cohere(
-        cohere_api_key=cohere_key,
         model=model,
         temperature=temperature,
-        max_tokens=max_tokens
+        max_tokens=max_tokens,
+        cohere_api_key=cohere_key
     )
     
     # Configure the retriever to get more context
