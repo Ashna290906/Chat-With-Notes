@@ -13,10 +13,25 @@ def get_qa_chain(vectorstore, detail_level):
     max_retries = 1
     
     # Add prompt suffix to encourage detailed responses
-    prompt_suffix = ("\nIMPORTANT: Provide a comprehensive answer with detailed explanations, "
-                   "examples, and proper formatting. Use bullet points (•) for lists and key points "
-                   "wherever appropriate. For complex topics, use a mix of paragraphs and bullet points "
-                   "to enhance readability. Maintain clear structure with markdown formatting.")
+    prompt_suffix = ("""\nIMPORTANT: When creating tables, use EXACTLY this markdown format:
+    
+    | Column 1 | Column 2 | Column 3 |
+    |----------|----------|----------|
+    | Data 1   | Data 2   | Data 3   |
+    | Data 4   | Data 5   | Data 6   |
+    
+    RULES FOR TABLES:
+    1. Must start and end with blank lines
+    2. Must use pipe (|) for column separation
+    3. Must include header separator row with ---
+    4. No HTML tags allowed
+    5. For lists within tables, separate items with semicolons
+    
+    For regular text:
+    - Use markdown bullet points (- or *)
+    - Use **bold** and *italic* for emphasis
+    - Never use HTML tags
+    - Ensure proper spacing around headings and paragraphs""")
     
     # Add repetition penalty to reduce redundancy
     repetition_penalty = 1.2
