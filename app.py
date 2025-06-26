@@ -380,14 +380,15 @@ st.markdown("""
     
     /* Chat messages */
     .stChatMessage {
-        padding: 12px 0 !important;
-        margin: 0 0 16px 0 !important;
+        padding: 0 !important;
+        margin: 8px 0 !important;
         border: none !important;
         background: transparent !important;
-    }
-    
-    .stChatMessage > div:first-child {
+        box-shadow: none !important;
+        display: flex !important;
+        flex-direction: row !important;
         align-items: flex-start !important;
+        min-height: 0 !important;
     }
     
     .stChatMessage .stChatMessageContent {
@@ -397,6 +398,7 @@ st.markdown("""
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
         font-size: 15px !important;
         line-height: 1.5 !important;
+        margin: 4px 0 !important;
     }
     
     .stChatMessage[data-testid="user"] .stChatMessageContent {
@@ -535,7 +537,37 @@ if "last_uploaded" not in st.session_state:
 
 # Login / Signup UI
 def show_auth_ui():
-    st.markdown("""<style>
+    st.markdown("""
+    <style>
+    /* Main container styles */
+    [data-testid="stAppViewContainer"] > .main {
+        padding: 2rem 1rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        min-height: 100vh !important;
+    }
+    
+    .stApp {
+        background: linear-gradient(135deg, #0f0c29, #4a1b7a, #302b63, #1a1a2e) !important;
+        background-size: 300% 300% !important;
+        animation: gradient 15s ease infinite !important;
+    }
+    
+    .auth-container {
+        background: rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(15px) saturate(1.5);
+        border-radius: 16px;
+        padding: 2.5rem !important;
+        width: 100%;
+        max-width: 450px !important;
+        animation: fadeIn 0.6s ease-out;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        margin: 0 !important;
+    }
+    </style>
+    <style>
         @keyframes gradient {
             0% {background-position: 0% 50%;}
             50% {background-position: 100% 50%;}
@@ -576,7 +608,8 @@ def show_auth_ui():
             align-items: center !important;
             justify-content: center !important;
             min-height: 100vh !important;
-            padding: 20px !important;
+            padding: 0 !important;
+            margin: 0 !important;
         }
         .auth-container {
             background: rgba(255, 255, 255, 0.1) !important;
@@ -588,6 +621,7 @@ def show_auth_ui():
             animation: fadeIn 0.6s ease-out;
             border: 1px solid rgba(255, 255, 255, 0.15);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin: 0 !important;
         }
         .stTextInput > div > div > input {
             border-radius: 12px !important; 
@@ -658,8 +692,10 @@ def show_auth_ui():
         }
     </style>""", unsafe_allow_html=True)
 
-    st.markdown("<div class='auth-container'>", unsafe_allow_html=True)
-    st.markdown("<h1 class='gradient-text'>Welcome to Chat with Notes</h1>", unsafe_allow_html=True)
+    st.markdown("""
+    <div class="auth-container">
+        <h1 class='gradient-text'>Welcome to Chat with Notes</h1>
+    """, unsafe_allow_html=True)
 
     tab1, tab2 = st.tabs(["Login", "Sign Up"])
     with tab1:
@@ -685,7 +721,8 @@ def show_auth_ui():
                 st.session_state.user = email
                 st.success("Account created!")
                 st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
+    
+    st.markdown("</div>", unsafe_allow_html=True)  # Close auth-container
     st.stop()
 
 if not st.session_state.user:
@@ -914,9 +951,14 @@ if st.session_state.last_uploaded:
         </div>
     """, unsafe_allow_html=True)
 else:
-    # Show animated welcome message when no document is loaded
+    # Show animated welcome message when no document is loaded (without the empty box)
     st.markdown("""
-        <div style="text-align: center; margin: 5rem 0; padding: 2rem;">
+        <style>
+            .stApp [data-testid="stAppViewContainer"] > .main > .block-container {
+                padding-top: 1rem;
+            }
+        </style>
+        <div style="text-align: center; padding: 2rem 1rem;">
             <h1 style="color: white; font-size: 2.5rem; margin-bottom: 1rem; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
                 <span id="welcome-text"></span><span class="typing-animation"></span>
             </h1>
