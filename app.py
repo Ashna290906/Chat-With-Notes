@@ -692,10 +692,8 @@ def show_auth_ui():
         }
     </style>""", unsafe_allow_html=True)
 
-    st.markdown("""
-    <div class="auth-container">
-        <h1 class='gradient-text'>Welcome to Chat with Notes</h1>
-    """, unsafe_allow_html=True)
+    st.markdown("<h1 class='gradient-text'>Welcome to Chat with Notes</h1>", unsafe_allow_html=True)
+
 
     tab1, tab2 = st.tabs(["Login", "Sign Up"])
     with tab1:
